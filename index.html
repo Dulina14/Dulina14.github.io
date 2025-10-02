@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f4f4f4;
+        }
+
+        nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        nav button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        nav button:hover, nav button.active {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        .page {
+            display: none;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: fadeIn 0.5s;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .home-header {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .profile-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 1rem auto;
+            display: block;
+            border: 5px solid #667eea;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .placeholder-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 1rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 4rem;
+            border: 5px solid #667eea;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #667eea;
+            margin: 1rem 0;
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .bio-text {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left;
+            font-size: 1.1rem;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .bio-text a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+            transition: border-bottom 0.3s;
+        }
+
+        .bio-text a:hover {
+            border-bottom: 2px solid #667eea;
+        }
+
+        .social-links {
+            max-width: 800px;
+            margin: 1.5rem auto 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-meta {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .image-grid img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .image-grid img:hover {
+            transform: scale(1.05);
+        }
+
+        .links {
+            margin-top: 1rem;
+        }
+
+        .links a {
+            display: inline-block;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            padding: 0.5rem 1rem;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .links a:hover {
+            background: #764ba2;
+        }
+
+        .add-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 2rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #764ba2;
+        }
+
+        .btn-secondary {
+            background: #ddd;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #ccc;
+        }
+
+        .edit-profile-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s;
+        }
+
+        .edit-profile-btn:hover {
+            background: #764ba2;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+
+        .file-preview {
+            margin-top: 1rem;
+            padding: 0.5rem;
+            background: #f9f9f9;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 1rem;
+            }
+
+            nav button {
+                font-size: 0.9rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .image-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><button class="nav-btn active" data-page="home">Home</button></li>
+            <li><button class="nav-btn" data-page="competitions">Competitions</button></li>
+            <li><button class="nav-btn" data-page="projects">Projects</button></li>
+        </ul>
+    </nav>
+
+    <div id="home" class="page active">
+        <div class="home-header">
+            <div id="profilePhotoContainer"></div>
+            <h1 id="displayName">Your Name</h1>
+            <div class="bio-text" id="displayBio">
+                <p>Click "Edit Profile" below to add your name, photo, and bio. Tell the world about yourself, your passions, and your journey!</p>
+            </div>
+            <button class="edit-profile-btn" onclick="openProfileModal()">Edit Profile</button>
+        </div>
+    </div>
+
+    <div id="competitions" class="page">
+        <h2>Competitions & Achievements</h2>
+        <button class="add-btn" onclick="openModal('competition')">+ Add Competition</button>
+        <div id="competitionsList"></div>
+    </div>
+
+    <div id="projects" class="page">
+        <h2>Projects</h2>
+        <button class="add-btn" onclick="openModal('project')">+ Add Project</button>
+        <div id="projectsList"></div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Add Item</h2>
+            <form id="itemForm">
+                <div class="form-group">
+                    <label for="title">Title *</label>
+                    <input type="text" id="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="text" id="date" placeholder="e.g., January 2024">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description *</label>
+                    <textarea id="description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="images">Upload Images</label>
+                    <input type="file" id="images" multiple accept="image/*">
+                    <div id="imagePreview" class="file-preview"></div>
+                </div>
+                <div class="form-group">
+                    <label for="documents">Upload Documents (PDF, Word, etc.)</label>
+                    <input type="file" id="documents" multiple>
+                    <div id="documentPreview" class="file-preview"></div>
+                </div>
+                <div class="form-group">
+                    <label for="links">Links (YouTube, websites, etc.)</label>
+                    <textarea id="links" placeholder="One link per line&#10;https://youtube.com/watch?v=...&#10;https://example.com"></textarea>
+                </div>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <h2>Edit Profile</h2>
+            <form id="profileForm">
+                <div class="form-group">
+                    <label for="profileName">Your Name *</label>
+                    <input type="text" id="profileName" required>
+                </div>
+                <div class="form-group">
+                    <label for="profilePhoto">Profile Photo</label>
+                    <input type="file" id="profilePhoto" accept="image/*">
+                    <div id="profilePhotoPreview" class="file-preview"></div>
+                </div>
+                <div class="form-group">
+                    <label for="profileBio">Bio *</label>
+                    <textarea id="profileBio" required placeholder="Tell us about yourself..."></textarea>
+                    <small style="color: #888; display: block; margin-top: 0.5rem;">
+                        💡 Tip: You can add links using this format: [Link Text](https://example.com)
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label for="profileLinks">Social Links (Optional)</label>
+                    <textarea id="profileLinks" placeholder="Add your social media and other links, one per line:&#10;LinkedIn: https://linkedin.com/in/yourprofile&#10;GitHub: https://github.com/yourusername&#10;Email: your.email@example.com"></textarea>
+                </div>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary">Save Profile</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeProfileModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let data = {
+            profile: {
+                name: 'Your Name',
+                photo: null,
+                bio: 'Click "Edit Profile" below to add your name, photo, and bio. Tell the world about yourself, your passions, and your journey!',
+                links: ''
+            },
+            competitions: [],
+            projects: []
+        };
+
+        let currentType = '';
+        let editingIndex = -1;
+
+        function init() {
+            loadData();
+            updateProfile();
+            renderCompetitions();
+            renderProjects();
+            setupNavigation();
+            setupFormListeners();
+        }
+
+        function setupNavigation() {
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const page = btn.dataset.page;
+                    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                    document.getElementById(page).classList.add('active');
+                    btn.classList.add('active');
+                });
+            });
+        }
+
+        function setupFormListeners() {
+            document.getElementById('images').addEventListener('change', function(e) {
+                const preview = document.getElementById('imagePreview');
+                preview.innerHTML = `${e.target.files.length} image(s) selected`;
+            });
+
+            document.getElementById('documents').addEventListener('change', function(e) {
+                const preview = document.getElementById('documentPreview');
+                const fileNames = Array.from(e.target.files).map(f => f.name).join(', ');
+                preview.innerHTML = fileNames || 'No files selected';
+            });
+
+            document.getElementById('profilePhoto').addEventListener('change', function(e) {
+                const preview = document.getElementById('profilePhotoPreview');
+                preview.innerHTML = e.target.files.length ? '1 image selected' : 'No image selected';
+            });
+        }
+
+        function openModal(type) {
+            currentType = type;
+            editingIndex = -1;
+            document.getElementById('modalTitle').textContent = `Add ${type === 'competition' ? 'Competition' : 'Project'}`;
+            document.getElementById('itemForm').reset();
+            document.getElementById('imagePreview').innerHTML = '';
+            document.getElementById('documentPreview').innerHTML = '';
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        function openProfileModal() {
+            document.getElementById('profileName').value = data.profile.name;
+            document.getElementById('profileBio').value = data.profile.bio;
+            document.getElementById('profileLinks').value = data.profile.links || '';
+            document.getElementById('profilePhotoPreview').innerHTML = '';
+            document.getElementById('profileModal').classList.add('active');
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.remove('active');
+        }
+
+        document.getElementById('itemForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const item = {
+                title: document.getElementById('title').value,
+                date: document.getElementById('date').value,
+                description: document.getElementById('description').value,
+                images: [],
+                documents: [],
+                links: document.getElementById('links').value.split('\n').filter(l => l.trim())
+            };
+
+            const imageFiles = document.getElementById('images').files;
+            for (let file of imageFiles) {
+                const dataUrl = await fileToDataUrl(file);
+                item.images.push({ name: file.name, data: dataUrl });
+            }
+
+            const docFiles = document.getElementById('documents').files;
+            for (let file of docFiles) {
+                const dataUrl = await fileToDataUrl(file);
+                item.documents.push({ name: file.name, data: dataUrl, type: file.type });
+            }
+
+            if (editingIndex >= 0) {
+                data[currentType + 's'][editingIndex] = item;
+            } else {
+                data[currentType + 's'].push(item);
+            }
+
+            saveData();
+            if (currentType === 'competition') {
+                renderCompetitions();
+            } else {
+                renderProjects();
+            }
+            closeModal();
+        });
+
+        document.getElementById('profileForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            data.profile.name = document.getElementById('profileName').value;
+            data.profile.bio = document.getElementById('profileBio').value;
+            data.profile.links = document.getElementById('profileLinks').value;
+
+            const photoFile = document.getElementById('profilePhoto').files[0];
+            if (photoFile) {
+                data.profile.photo = await fileToDataUrl(photoFile);
+            }
+
+            saveData();
+            updateProfile();
+            closeProfileModal();
+        });
+
+        function fileToDataUrl(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function updateProfile() {
+            document.getElementById('displayName').textContent = data.profile.name;
+            
+            // Convert markdown-style links to HTML
+            let bioHtml = data.profile.bio.replace(/\[([^\]]+)\]\(([^\)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+            bioHtml = bioHtml.replace(/\n/g, '<br>');
+            document.getElementById('displayBio').innerHTML = `<p>${bioHtml}</p>`;
+            
+            // Add social links if available
+            if (data.profile.links && data.profile.links.trim()) {
+                const linksArray = data.profile.links.split('\n').filter(l => l.trim());
+                const linksHtml = linksArray.map(link => {
+                    const parts = link.split(':');
+                    if (parts.length >= 2) {
+                        const label = parts[0].trim();
+                        const url = parts.slice(1).join(':').trim();
+                        return `<a href="${url}" target="_blank">${label}</a>`;
+                    }
+                    return `<a href="${link.trim()}" target="_blank">${link.trim()}</a>`;
+                }).join('');
+                document.getElementById('displayBio').innerHTML += `<div class="social-links">${linksHtml}</div>`;
+            }
+            
+            const photoContainer = document.getElementById('profilePhotoContainer');
+            if (data.profile.photo) {
+                photoContainer.innerHTML = `<img src="${data.profile.photo}" alt="Profile Photo" class="profile-photo">`;
+            } else {
+                const initial = data.profile.name.charAt(0).toUpperCase();
+                photoContainer.innerHTML = `<div class="placeholder-photo">${initial}</div>`;
+            }
+        }
+
+        function renderCompetitions() {
+            const container = document.getElementById('competitionsList');
+            if (data.competitions.length === 0) {
+                container.innerHTML = '<div class="card"><p>No competitions added yet. Click "Add Competition" to get started!</p></div>';
+                return;
+            }
+
+            container.innerHTML = data.competitions.map((item, index) => `
+                <div class="card">
+                    <h3>${item.title}</h3>
+                    ${item.date ? `<div class="card-meta">${item.date}</div>` : ''}
+                    <p>${item.description}</p>
+                    ${item.images.length > 0 ? `
+                        <div class="image-grid">
+                            ${item.images.map(img => `<img src="${img.data}" alt="${img.name}" onclick="window.open('${img.data}')">`).join('')}
+                        </div>
+                    ` : ''}
+                    ${item.documents.length > 0 ? `
+                        <div class="links">
+                            <strong>Documents:</strong><br>
+                            ${item.documents.map(doc => `<a href="${doc.data}" download="${doc.name}">${doc.name}</a>`).join('')}
+                        </div>
+                    ` : ''}
+                    ${item.links.length > 0 ? `
+                        <div class="links">
+                            <strong>Links:</strong><br>
+                            ${item.links.map(link => `<a href="${link}" target="_blank">${link}</a>`).join('')}
+                        </div>
+                    ` : ''}
+                    <button class="delete-btn" onclick="deleteItem('competitions', ${index})">Delete</button>
+                </div>
+            `).join('');
+        }
+
+        function renderProjects() {
+            const container = document.getElementById('projectsList');
+            if (data.projects.length === 0) {
+                container.innerHTML = '<div class="card"><p>No projects added yet. Click "Add Project" to get started!</p></div>';
+                return;
+            }
+
+            container.innerHTML = data.projects.map((item, index) => `
+                <div class="card">
+                    <h3>${item.title}</h3>
+                    ${item.date ? `<div class="card-meta">${item.date}</div>` : ''}
+                    <p>${item.description}</p>
+                    ${item.images.length > 0 ? `
+                        <div class="image-grid">
+                            ${item.images.map(img => `<img src="${img.data}" alt="${img.name}" onclick="window.open('${img.data}')">`).join('')}
+                        </div>
+                    ` : ''}
+                    ${item.documents.length > 0 ? `
+                        <div class="links">
+                            <strong>Documents:</strong><br>
+                            ${item.documents.map(doc => `<a href="${doc.data}" download="${doc.name}">${doc.name}</a>`).join('')}
+                        </div>
+                    ` : ''}
+                    ${item.links.length > 0 ? `
+                        <div class="links">
+                            <strong>Links:</strong><br>
+                            ${item.links.map(link => `<a href="${link}" target="_blank">${link}</a>`).join('')}
+                        </div>
+                    ` : ''}
+                    <button class="delete-btn" onclick="deleteItem('projects', ${index})">Delete</button>
+                </div>
+            `).join('');
+        }
+
+        function deleteItem(type, index) {
+            if (confirm('Are you sure you want to delete this item?')) {
+                data[type].splice(index, 1);
+                saveData();
+                if (type === 'competitions') {
+                    renderCompetitions();
+                } else {
+                    renderProjects();
+                }
+            }
+        }
+
+        function saveData() {
+            try {
+                const dataStr = JSON.stringify(data);
+                if (dataStr.length > 5000000) {
+                    alert('Warning: Your portfolio is getting quite large. Consider using fewer or smaller images.');
+                }
+            } catch (e) {
+                alert('Unable to save data. Your portfolio might be too large.');
+            }
+        }
+
+        function loadData() {
+            // Data is stored in memory during the session
+        }
+
+        init();
+    </script>
+</body>
+</html>
